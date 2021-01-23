@@ -5,8 +5,7 @@ const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SGKEY)
 //Create 
 const Create = (req, res) => {
-
-  
+    
     Receipt.create(req.body)
     .then(createdReceipt => {
         res.json({
@@ -61,7 +60,6 @@ const SendMail =async (req,res)=> {
 
 
 receipt=await Receipt.findById(req.body.receiptId)
-console.log(receipt)
 
   storeInfo=await StoresInfo.findById(receipt.storeId)
 
@@ -69,6 +67,8 @@ console.log(receipt)
   var itemPrice =``
   var itemQuantity=``
   var itemTotalPrice= ``
+
+  const qrCodeLink = 'beat-the-receipt.herokuapp.com'
   
   
   receipt.receipt.items.map((item) => {
@@ -365,7 +365,7 @@ console.log(receipt)
         <body>
              
     
-          <img id="barcode" src="https://api.qrserver.com/v1/create-qr-code/?data=beat-the-receipt.herokuapp.com&amp;size=100x100" alt="" title="Digital Receipt" width="100" height="100">
+          <img id="barcode" src="https://api.qrserver.com/v1/create-qr-code/?data=${qrCodeLink}&amp;size=100x100" alt="" title="Digital Receipt" width="100" height="100">
         </body>
     </html>
     </td>
