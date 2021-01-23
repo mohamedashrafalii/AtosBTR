@@ -22,4 +22,4 @@ storesInfo.index({
   "$**": "text"
 });
 
-module.exports = Receipt = mongoose.model("Receipt", storesInfo);
+module.exports = StoresInfo = mongoose.model("StoresInfo", storesInfo);

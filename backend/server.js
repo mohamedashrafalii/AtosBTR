@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const app = express();
-const config = require("./config/keys.js");
 const dotenv = require("dotenv")
 
 dotenv.config()
@@ -38,6 +37,7 @@ app.use("/api/receipts",require("./api/routes/receipt.router"));
 app.use("/api/medicines",require("./api/routes/medicine.router"));
 app.use("/api/auth",require("./api/routes/auth.router"));
 app.use("/api/users",require("./api/routes/users.router"));
+app.use("/api/storesInfo",require("./api/routes/storesInfo.router"));
 
 // Wrong path
 app.use((req, res) =>

@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-//offer schema
+//Receipt schema
 const receiptSchema = new Schema(
   {
    
-    receipt: [JSON],
+    receipt: JSON,
     barcode: type=Number,
     storeId :
     {

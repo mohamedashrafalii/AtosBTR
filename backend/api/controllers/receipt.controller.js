@@ -1,12 +1,13 @@
 const Receipt = require("../../models/receipt.model");
+const StoresInfo = require("../../models/storesInfo.model");
 // const nodemailer = require("nodemailer");
-const apiKey = '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'
 const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SGKEY)
 //Create 
 const Create = (req, res) => {
 
   
-    Receipt.create({ receipt: req.body.receipt })
+    Receipt.create(req.body)
     .then(createdReceipt => {
         res.json({
             msg:"Created successfully",
@@ -57,30 +58,12 @@ const ReadAll = (req, res) => {
 
 const SendMail =async (req,res)=> {
 
-//   const testItems ={
-//     StoreName:'TOMMY HILFIGER',
-//     StoreAddress:'MALL OF BERLIN',
-//     StoreNumber:'+20114545454545',
-//     totalPrice:200,
-//     lineItems: [
-//         {
-//           name: 'Test1',
-//           description: '',
-//           quantity: 2,
-//           price: 45.99,
-//           barCodeNumber:''
-//         },
-//         {
-//             name: 'Test2',
-//             description: '',
-//             quantity: 3,
-//             price: 15.00,
-//             barCodeNumber:''
-//           }
-//       ]
-// }
 
 
+receipt=await Receipt.findById(req.body.receiptId)
+console.log(receipt)
+
+  storeInfo=await StoresInfo.findById(receipt.storeId)
 
   var itemNames =``
   var itemPrice =``
@@ -88,7 +71,7 @@ const SendMail =async (req,res)=> {
   var itemTotalPrice= ``
   
   
-  testItems.lineItems.map((item) => {
+  receipt.receipt.items.map((item) => {
       itemNames = itemNames + `</table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="owmGhLdZeET2HV2r1WKeu9.2.1.3.1" data-mc-module-version="2019-10-22">
       <tbody>
         <tr>
@@ -132,7 +115,7 @@ const SendMail =async (req,res)=> {
   
   const msg = {
     to: req.body.mail, // Change to your recipient
-    from: `${testItems.StoreName} RECEIPT🧾 <beatthereceipt@gmail.com>`, // Change to your verified sender
+    from: `${storeInfo.storeName} RECEIPT🧾 <beatthereceipt@gmail.com>`, // Change to your verified sender
     subject: 'Your Receipt🧾',
   //   text: 'a',
     html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -273,9 +256,9 @@ const SendMail =async (req,res)=> {
           </tr>
         </tbody></table><table class="module" role="module" data-type="text" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-start-index="9575" data-end-index="9713" data-muid="iKvU5CdNQaZE4RVi5AvEzz" data-mc-module-version="2019-10-22">
           <tbody><tr data-start-index="9720" data-end-index="9724">
-            <td style="padding:51px 20px 51px 20px; background-color:#479521; line-height:NaNpx;" height="100%" valign="top" bgcolor="#479521" data-start-index="9733" data-end-index="9880"><div><div style="font-family: inherit; text-align: center"><span style="color: #ffffff; font-size: 72px">${testItems.StoreName}</span></div>
-    <div style="font-family: inherit; text-align: center"><span style="color: #ffffff; font-size: 36px">${testItems.StoreAddress}</span></div>
-    <div style="font-family: inherit; text-align: center"><span style="color: #ffffff; font-size: 36px">${testItems.StoreNumber}</span></div><div></div></div></td>
+            <td style="padding:51px 20px 51px 20px; background-color:#479521; line-height:NaNpx;" height="100%" valign="top" bgcolor="#479521" data-start-index="9733" data-end-index="9880"><div><div style="font-family: inherit; text-align: center"><span style="color: #ffffff; font-size: 72px">${storeInfo.storeName}</span></div>
+    <div style="font-family: inherit; text-align: center"><span style="color: #ffffff; font-size: 36px">${storeInfo.address}</span></div>
+    <div style="font-family: inherit; text-align: center"><span style="color: #ffffff; font-size: 36px">${storeInfo.phoneNumbers[0]}</span></div><div></div></div></td>
           </tr>
         </tbody></table><table border="0" cellpadding="0" cellspacing="0" align="center" width="100%" role="module" data-type="columns" data-version="2" style="padding:30px 20px 0px 20px; box-sizing:border-box;" bgcolor="" data-start-index="10299" data-end-index="10606" data-distribution="1,1,1,1">
           <tbody><tr role="module-content" data-start-index="10613" data-end-index="10639">
@@ -349,7 +332,7 @@ const SendMail =async (req,res)=> {
         <tbody>
           <tr>
             <td style="padding:18px 0px 18px 0px; line-height:NaNpx; text-align:inherit; background-color:#ffffff;" height="100%" valign="top" bgcolor="#ffffff" role="module-content"><div><div style="font-family: inherit; text-align: inherit">&nbsp;</div>
-    <div style="font-family: inherit; text-align: center"><span style="color: #606060; font-size: 36px">$${testItems.totalPrice}</span></div>
+    <div style="font-family: inherit; text-align: center"><span style="color: #606060; font-size: 36px">$${receipt.receipt.totalPrice}</span></div>
     <div style="font-family: inherit; text-align: center"><br></div><div></div></div></td>
           </tr>
         </tbody>
@@ -469,9 +452,15 @@ const SendMail =async (req,res)=> {
     .send(msg)
     .then(() => {
       console.log('Email sent')
+      res.json({
+        msg: "Email Sent"
+      });
     })
     .catch((error) => {
       console.error(error)
+      res.json({
+        msg: "ERROR"
+      });
     })
   
 };

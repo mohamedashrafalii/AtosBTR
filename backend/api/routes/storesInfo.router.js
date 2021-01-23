@@ -8,13 +8,15 @@ const verify = require("../controllers/verifyToken.controller")
 const {
   create,
   update,
-  deletee
+  deletee,
+  Read
   
 } =  Controller;
 
-router.post("/create",verify, create);
-router.put("/update/:id",verify,update);
-router.delete("/delete/:id",verify,deletee);
+router.post("/create", create);
+router.put("/update/:id",update);
+router.delete("/delete/:id",deletee);
+router.get("/:id",Read);
 
 
 module.exports = router;

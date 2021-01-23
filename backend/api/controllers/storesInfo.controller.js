@@ -1,4 +1,4 @@
-const Target = require("../../models/product.model");
+const Target = require("../../models/storesInfo.model");
 var unirest = require("unirest");
 //Create 
 const create =async (req, res) => {
@@ -24,7 +24,21 @@ const create =async (req, res) => {
     //req.body={targetName:}
 };
 
-
+//Read by id
+const Read = (req, res) => {
+  Target.findById(req.params.id)
+  .then(foundTarget => {
+    res.json({
+      msg: "This Target information",
+      data: foundTarget
+    });
+  })
+  .catch(error => {
+    res.json({
+      err: error.message
+    });
+  });
+};
 
 //read all
 get= async (req, res) => {
@@ -74,6 +88,7 @@ deletee =  async (req, res) => {
 module.exports = {
     create,
     update,
-    deletee
+    deletee,
+    Read
   };
   
