@@ -6,6 +6,7 @@ import Receipt from "../components/Receipt.jsx";
 import Medicine from"../components/medicine/medicine.jsx";
 import Navbar from '../components/navbar/navbar.jsx'
 import Login from '../components/login/login.jsx'
+import CreateStore from '../components/CreateStore/createStore.jsx'
 import axios from 'axios'
 
 class App extends Component {
@@ -44,6 +45,7 @@ UNSAFE_componentWillMount()
    <BrowserRouter>
    <Switch>
    <Route exact path="/"  component={()=><Login key="2" value={this.callbackFunction} />} />
+   <Route exact path="/subscribe"  component={()=><CreateStore/>} />
 
    <Route exact path="/main/:type"  component={(props)=><Navbar key="1" {...props} type={localStorage.getItem("type")} value={localStorage.getItem('token')} />} />
 

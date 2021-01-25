@@ -7,8 +7,7 @@ const create =async (req, res) => {
   .then(createdTarget => {
         res.json({
             msg:"Created successfully",
-            id:createdTarget._id,
-            data:createdTarget
+            id:createdTarget._id
           });
          
     },
