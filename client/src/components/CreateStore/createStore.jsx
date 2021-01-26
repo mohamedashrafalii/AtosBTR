@@ -49,16 +49,16 @@ export default class createStore extends Component {
     e.preventDefault()
     e.stopPropagation()
     this.setState({ nameAlert: false,addressAlert: false,categoryAlert:false });
-    if(this.state.storeName===''){
+    if(this.state.storeName==''){
         this.setState({ nameAlert: true });
     }
-    if(this.state.storeAddress===''){
+    if(this.state.storeAddress==''){
         this.setState({ addressAlert: true });
     }
-    if(this.state.storeCategory===''){
+    if(this.state.storeCategory==''){
         this.setState({ categoryAlert: true });
     }
-    if (this.state.storeName!=='' &&this.state.storeAddress!=='' &&this.state.storeCategory!=='') {
+    if (this.state.storeName!='' &&this.state.storeAddress!='' &&this.state.storeCategory!='') {
       this.setState({loading:true, modalShow: true });
       await axios.post('http://localhost:5000/api/storesInfo/create',
       {
