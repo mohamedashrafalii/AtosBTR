@@ -2,10 +2,11 @@ import React, { Component, useState } from "react";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import Alert from 'react-bootstrap/Alert'
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
 import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
+import KeyModal from './SubscModal.js'
+import axios from 'axios';
+
 // import SigninNav from "./NavBar";
 export default class createStore extends Component {
   constructor(props) {
@@ -19,7 +20,9 @@ export default class createStore extends Component {
       modalShow: false,
       nameAlert:false,
       addressAlert:false,
-      categoryAlert:false
+      categoryAlert:false,
+      loading:false,
+      subscriptionKey:"",
     };
     this.handleStoreNameChange = this.handleStoreNameChange.bind(this);
     this.handleStoreAddressChange = this.handleStoreAddressChange.bind(this);
@@ -40,7 +43,8 @@ export default class createStore extends Component {
   handleStoreNumberChange(event) {
     this.setState({ storeNumber: event.target.value });
   }
-  submitStore = (e) => {
+  // submitStore = (e) => {
+    async submitStore  (e)  {
     // alert(this.state.storeCategory)
     e.preventDefault()
     e.stopPropagation()
@@ -55,7 +59,22 @@ export default class createStore extends Component {
         this.setState({ categoryAlert: true });
     }
     if (this.state.storeName!='' &&this.state.storeAddress!='' &&this.state.storeCategory!='') {
-      this.setState({ modalShow: true });
+      this.setState({loading:true, modalShow: true });
+      await axios.post('http://localhost:5000/api/storesInfo/create',
+      {
+        phoneNumbers:[this.state.storeNumber],
+        address:this.state.storeAddress,
+        storeName:this.state.storeName,
+        category:this.state.storeCategory
+      })
+        .then(response => {
+          this.setState({subscriptionKey:response.data.id,loading:false });
+        })
+        .catch(error => {
+          alert("OOPS!! Something went wrong. Try again")
+          this.setState({modalShow:false,loading:false });
+          console.log(error);
+        });
     }
   };
 
@@ -141,9 +160,9 @@ export default class createStore extends Component {
                           <ToggleButton
                             disabled={!this.state.categoryInputHidden}
                             variant="outline-info"
-                            value={"food"}
+                            value={"restaurant"}
                           >
-                            Food
+                            Restaurant
                           </ToggleButton>
                           <ToggleButton
                             disabled={!this.state.categoryInputHidden}
@@ -158,6 +177,13 @@ export default class createStore extends Component {
                             value={"medical"}
                           >
                             Medical
+                          </ToggleButton>
+                          <ToggleButton
+                            disabled={!this.state.categoryInputHidden}
+                            variant="outline-info"
+                            value={"clothes"}
+                          >
+                            Clothes
                           </ToggleButton>
                         </ToggleButtonGroup>
                       </div>
@@ -209,9 +235,10 @@ export default class createStore extends Component {
         </div>
         <div class="container">
           <div class="row">
-            <KeyModal show={this.state.modalShow} storeName={this.state.storeName} />
+            <KeyModal show={this.state.modalShow} storeName={this.state.storeName} loading={this.state.loading} sKey={this.state.subscriptionKey}/>
           </div>
         </div>
+       
         <br />
         <br />
       </div>
@@ -220,64 +247,7 @@ export default class createStore extends Component {
   }
 }
 
-const KeyModal = (props) => {
-  // const [show, setShow] = useState(props.show);
-  var show = props.show;
-  const handleClose = () => (show = false);
-  const handleShow = () => (show = true);
 
-  return (
-    <>
-      {/* <Button variant="primary" onClick={handleShow}>
-          Launch static backdrop modal
-        </Button> */}
-
-      <Modal
-        show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}
-      >
-        <Modal.Header>
-        <Modal.Title>{props.storeName} Subscription</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Please save your subscription key as you will need it later. All our
-          API's are dependant on this key
-        </Modal.Body>
-        
-        <Modal.Footer>
-          {/* <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button> */}
-          {/* <div class="form-label-group"> */}
-          
-          <Modal.Body>
-          Subscription Key:
-        </Modal.Body>
-            
-          <input
-            id="inputStoreAddress"
-            class="form-control"
-            placeholder="Enter Store Address"
-            value="A2sd232323sasd"
-            disabled="true"
-            autofocus
-          />
-          {/* <button
-                      class="btn btn-lg btn-info btn-block text-uppercase"
-                      type="submit"
-                    >
-                      COPY
-                    </button> */}
-          <br />
-          {/* </div> */}
-          {/* <Button variant="primary">Understood</Button> */}
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
-};
 
 
 
@@ -292,27 +262,6 @@ const bgImage = {
     
   };
 
-//   const AlertExample = (props) => {
-//     const [show, setShow] = useState(true);
 
-//         return (
-//           <>
-//             <Alert show={show} variant="info">
-//               <Alert.Heading>How's it going?!</Alert.Heading>
-//               <p>
-//                 Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget
-//                 lacinia odio sem nec elit. Cras mattis consectetur purus sit amet
-//                 fermentum.
-//               </p>
-//               <hr />
-//               <div className="d-flex justify-content-end">
-//                 <Button onClick={() => setShow(false)} variant="outline-success">
-//                   Close me y'all!
-//                 </Button>
-//               </div>
-//             </Alert>
-
-//             {!show && <Button onClick={() => setShow(true)}>Show Alert</Button>}
-//           </>
-//         );
-//   }
+  
+  
