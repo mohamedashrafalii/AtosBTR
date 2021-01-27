@@ -19,12 +19,11 @@ const Create = async (req, res) => {
             
             Receipt.updateOne({'_id':createdReceipt._id},req.body)
             .then(()=>{
-              let receipt=null
-              Receipt.findById(createdReceipt._id).then((x)=>
-              {
-                receipt=x
-                res.json({receipt:receipt})
-              })
+              res.json(
+                {
+                  qrCode:url
+                }
+              )
              
             }
              
