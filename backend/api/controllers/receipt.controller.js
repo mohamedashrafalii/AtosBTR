@@ -10,24 +10,35 @@ var QRCode = require('qrcode')
    
      
     
-const Create = (req, res) => {
-  QRCode.toDataURL('www.youtube.com', function (err, url) {
-      req.body.qrCode=url
-      Receipt.create(req.body)
+const Create = async (req, res) => {
+     await Receipt.create(req.body)
     .then(createdReceipt => {
-        res.json({
-            msg:"Created successfully",
-            id:createdReceipt._id
-          });
+          let Qr=null
+          QRCode.toDataURL('www.youtube.com',  (err, url) => {
+            req.body.qrCode=url
+            
+            Receipt.updateOne({'_id':createdReceipt._id},req.body)
+            .then(()=>{
+              let receipt=null
+              Receipt.findById(createdReceipt._id).then((x)=>
+              {
+                receipt=x
+                res.json({receipt:receipt})
+              })
+             
+            }
+             
+              )
+            
+          })
+          
     })
     .catch(error => {
       res.json({
         err: error.message
       });
     });
-  })
-  
-   
+
 };
 
 //Read by id
