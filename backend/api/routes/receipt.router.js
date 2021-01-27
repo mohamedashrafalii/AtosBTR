@@ -10,7 +10,7 @@ const {
   ReadAll
 } = receiptController;
 
-router.post("/create", Create);
+router.post("/create",verify, Create);
 router.get("/read/:id", Read);
 router.post("/sendMail", SendMail);
 router.get("/read",ReadAll)

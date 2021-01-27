@@ -85,10 +85,28 @@ const KeyModal = (props) => {
             disabled="true"
             autofocus
           />
-          <Alert  variant='success' show={alertt}>
+            <Alert  variant='success' show={alertt}>
                         Copied to clipboard
                     </Alert>
            <CopyToClipboard text={props.sKey}
+          onCopy={() => setAlert(true)}>
+          <button
+                      class="btn btn-lg btn-info  text-uppercase"
+                      // onClick={(e)=>this.submitStore(e)}
+                    >COPY</button>
+        </CopyToClipboard>
+            <input
+            id="inputStoreAddress"
+            class="form-control"
+            placeholder="Enter Store Address"
+            value={props.token}
+            disabled="true"
+            autofocus
+          />
+          <Alert  variant='success' show={alertt}>
+                        Copied to clipboard
+                    </Alert>
+           <CopyToClipboard text={props.token}
           onCopy={() => setAlert(true)}>
           <button
                       class="btn btn-lg btn-info  text-uppercase"

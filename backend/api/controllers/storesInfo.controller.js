@@ -1,13 +1,17 @@
 const Target = require("../../models/storesInfo.model");
 var unirest = require("unirest");
+const jwt = require("jsonwebtoken")
 //Create 
 const create =async (req, res) => {
  const target = await Target.create(req.body)
 
   .then(createdTarget => {
+    const token = jwt.sign({_id:createdTarget._id},process.env.TOKEN)
+    
         res.json({
             msg:"Created successfully",
-            id:createdTarget._id
+            id:createdTarget._id,
+            token:token
           });
          
     },

@@ -4,9 +4,16 @@ const StoresInfo = require("../../models/storesInfo.model");
 const sgMail = require('@sendgrid/mail')
 sgMail.setApiKey(process.env.SGKEY)
 //Create 
-const Create = (req, res) => {
+var QRCode = require('qrcode')
+
+
+   
+     
     
-    Receipt.create(req.body)
+const Create = (req, res) => {
+  QRCode.toDataURL('www.youtube.com', function (err, url) {
+      req.body.qrCode=url
+      Receipt.create(req.body)
     .then(createdReceipt => {
         res.json({
             msg:"Created successfully",
@@ -18,6 +25,9 @@ const Create = (req, res) => {
         err: error.message
       });
     });
+  })
+  
+   
 };
 
 //Read by id

@@ -23,6 +23,7 @@ export default class createStore extends Component {
       categoryAlert:false,
       loading:false,
       subscriptionKey:"",
+      token:""
     };
     this.handleStoreNameChange = this.handleStoreNameChange.bind(this);
     this.handleStoreAddressChange = this.handleStoreAddressChange.bind(this);
@@ -68,7 +69,7 @@ export default class createStore extends Component {
         category:this.state.storeCategory
       })
         .then(response => {
-          this.setState({subscriptionKey:response.data.id,loading:false });
+          this.setState({subscriptionKey:response.data.id,loading:false ,token:response.data.token});
         })
         .catch(error => {
           alert("OOPS!! Something went wrong. Try again")
@@ -235,7 +236,7 @@ export default class createStore extends Component {
         </div>
         <div class="container">
           <div class="row">
-            <KeyModal show={this.state.modalShow} storeName={this.state.storeName} loading={this.state.loading} sKey={this.state.subscriptionKey}/>
+            <KeyModal show={this.state.modalShow} storeName={this.state.storeName} loading={this.state.loading} sKey={this.state.subscriptionKey} token={this.state.token}/>
           </div>
         </div>
        

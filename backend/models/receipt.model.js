@@ -7,6 +7,7 @@ const receiptSchema = new Schema(
    
     receipt: JSON,
     barcode: type=Number,
+    qrCode: type=String,
     storeId :
     {
         type : Schema.Types.ObjectId,
