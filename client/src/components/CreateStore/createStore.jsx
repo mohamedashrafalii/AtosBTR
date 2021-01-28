@@ -21,6 +21,7 @@ export default class createStore extends Component {
       nameAlert:false,
       addressAlert:false,
       categoryAlert:false,
+      numberAlert:false,
       loading:false,
       subscriptionKey:"",
       token:""
@@ -49,17 +50,20 @@ export default class createStore extends Component {
     // alert(this.state.storeCategory)
     e.preventDefault()
     e.stopPropagation()
-    this.setState({ nameAlert: false,addressAlert: false,categoryAlert:false });
-    if(this.state.storeName==''){
+    this.setState({ nameAlert: false,addressAlert: false,categoryAlert:false,numberAlert:false });
+    if(this.state.storeName===''){
         this.setState({ nameAlert: true });
     }
-    if(this.state.storeAddress==''){
+    if(this.state.storeAddress===''){
         this.setState({ addressAlert: true });
     }
-    if(this.state.storeCategory==''){
+    if(this.state.storeCategory===''){
         this.setState({ categoryAlert: true });
     }
-    if (this.state.storeName!='' &&this.state.storeAddress!='' &&this.state.storeCategory!='') {
+    if(this.state.storeNumber.length<8){
+      this.setState({ numberAlert: true });
+  }
+    if (this.state.storeName!=='' &&this.state.storeAddress!=='' &&this.state.storeCategory!=='' && this.state.storeNumber.length<8) {
       this.setState({loading:true, modalShow: true });
       await axios.post('http://localhost:5000/api/storesInfo/create',
       {
@@ -141,6 +145,9 @@ export default class createStore extends Component {
                         enableSearch = 'true'
                         onChange={phone => this.setState({ storeNumber:phone })}
                         />
+                        <Alert  variant='danger' show={this.state.numberAlert}>
+                        Invalid phone Number!
+                    </Alert>
                       {/* <Alert  variant='danger' show={this.state.addressAlert}>
                         Store Number can't be empty!
                     </Alert> */}
