@@ -12,6 +12,7 @@ const KeyModal = (props) => {
 
   // const handleShowAlert = () => (showAlert = true);
   const [alertt, setAlert] = useState(false);
+  const [alertt2, setAlert2] = useState(false);
   if(props.loading){
     return(
       <Modal
@@ -63,8 +64,8 @@ const KeyModal = (props) => {
         <Modal.Title>{props.storeName} Subscription</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Please save your subscription key as you will need it later. All our
-          API's are dependant on this key
+          Please save your subscription key and token as you will need it later while using our
+          API's.
         </Modal.Body>
         
         <Modal.Footer>
@@ -78,36 +79,44 @@ const KeyModal = (props) => {
         </Modal.Body>
             
           <input
-            id="inputStoreAddress"
+            id="subs"
             class="form-control"
-            placeholder="Enter Store Address"
+            placeholder="subscription"
             value={props.sKey}
             disabled="true"
             autofocus
           />
-            <Alert  variant='success' show={alertt}>
+            <Alert  variant='success' show={alertt2}>
                         Copied to clipboard
                     </Alert>
            <CopyToClipboard text={props.sKey}
-          onCopy={() => setAlert(true)}>
+          onCopy={() => {setAlert2(true); setAlert(false)}}>
           <button
                       class="btn btn-lg btn-info  text-uppercase"
                       // onClick={(e)=>this.submitStore(e)}
                     >COPY</button>
         </CopyToClipboard>
-            <input
-            id="inputStoreAddress"
+        
+            {/* <input
+            id="token"
             class="form-control"
-            placeholder="Enter Store Address"
+            placeholder="token"
             value={props.token}
             disabled="true"
             autofocus
-          />
+          /> */}
+          {/* cols="30" */}
+          </Modal.Footer>
+          <Modal.Footer>
+          <Modal.Body>
+          Subscription Token:
+        </Modal.Body>
+           <textarea name="message" rows="3" class="form-control" value={props.token} disabled="true" autofocus/>
           <Alert  variant='success' show={alertt}>
                         Copied to clipboard
                     </Alert>
            <CopyToClipboard text={props.token}
-          onCopy={() => setAlert(true)}>
+          onCopy={() => {setAlert2(false); setAlert(true)}}>
           <button
                       class="btn btn-lg btn-info  text-uppercase"
                       // onClick={(e)=>this.submitStore(e)}
