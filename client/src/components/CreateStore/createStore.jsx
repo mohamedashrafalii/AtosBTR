@@ -6,8 +6,9 @@ import PhoneInput from 'react-phone-input-2'
 import 'react-phone-input-2/lib/style.css'
 import KeyModal from './SubscModal.js'
 import axios from 'axios';
+import staticVariables from '../Receipt/Statics.json'
 
-// import SigninNav from "./NavBar";
+
 export default class createStore extends Component {
   constructor(props) {
     super(props);
@@ -63,9 +64,9 @@ export default class createStore extends Component {
     if(this.state.storeNumber.length<8){
       this.setState({ numberAlert: true });
   }
-    if (this.state.storeName!=='' &&this.state.storeAddress!=='' &&this.state.storeCategory!=='' && this.state.storeNumber.length<8) {
+    if (this.state.storeName!=='' &&this.state.storeAddress!=='' &&this.state.storeCategory!=='' && this.state.storeNumber.length>=8) {
       this.setState({loading:true, modalShow: true });
-      await axios.post('http://localhost:5000/api/storesInfo/create',
+      await axios.post(`${staticVariables.backendURL}/api/storesInfo/create`,
       {
         phoneNumbers:[this.state.storeNumber],
         address:this.state.storeAddress,

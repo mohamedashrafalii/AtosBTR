@@ -14,7 +14,7 @@ const Create = async (req, res) => {
      await Receipt.create(req.body)
     .then(createdReceipt => {
           let Qr=null
-          QRCode.toDataURL('www.youtube.com',  (err, url) => {
+          QRCode.toDataURL(`${process.env.FRONTENDURL}/receipt/${createdReceipt._id}`,  (err, url) => {
             req.body.qrCode=url
             
             Receipt.updateOne({'_id':createdReceipt._id},req.body)
@@ -46,7 +46,7 @@ const Read = (req, res) => {
     .then(foundReceipt => {
       res.json({
         msg: "This Receipt information",
-        data: foundReceipt.receipt
+        data: foundReceipt
       });
     })
     .catch(error => {

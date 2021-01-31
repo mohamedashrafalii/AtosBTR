@@ -6,7 +6,7 @@ const receiptSchema = new Schema(
   {
    
     receipt: JSON,
-    barcode: type=Number,
+    barcode: type=String,
     qrCode: type=String,
     storeId :
     {
