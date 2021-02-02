@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 const receiptSchema = new Schema(
   {
    
-    receipt: JSON,
+    receipt: type=Object,
     barcode: type=String,
     qrCode: type=String,
     storeId :
