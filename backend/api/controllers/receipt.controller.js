@@ -13,6 +13,9 @@ const {receiptCreateValidation} = require("../../validations/receipt.validation"
 const Create = async (req, res) => {
   const {error} = receiptCreateValidation(req.body)
   if(error) return res.send(error.details[0].message) 
+  const store =  await StoresInfo.findById(req.body.storeId)
+  if(!store) return res.status(404).send({error:  'No Store exist with this key'})
+
      await Receipt.create(req.body)
     .then(createdReceipt => {
           let Qr=null

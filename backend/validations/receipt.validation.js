@@ -11,7 +11,7 @@ module.exports = {
 receiptCreateValidation : Receipt => {
     const createSchema = {
         storeId:Joi.required(),
-        barcode:Joi.number().positive(),
+        barcode:Joi.string(),
         receipt:{
             vatPercentage:Joi.number().positive().required(),
             items:Joi.array().items(product)

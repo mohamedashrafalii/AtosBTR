@@ -143,7 +143,7 @@ export default class receipt extends Component {
                               vatPercentage={this.state.receipt.vatPercentage}
                             />
                           </Card>
-                          <Barcode width={2} value={this.state.barcode} />
+                          {this.state.barcode&&<Barcode width={2} value={this.state.barcode} />}
                         </div>
                       </form>
                     </div>
