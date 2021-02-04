@@ -128,8 +128,8 @@ const KeyModal = (props) => {
                       type="submit"
                     >
                       COPY
-                    </button> */}
-          <br />
+                    </button>
+          <br /> */}
           {/* </div> */}
           {/* <Button variant="primary">Understood</Button> */}
         </Modal.Footer>

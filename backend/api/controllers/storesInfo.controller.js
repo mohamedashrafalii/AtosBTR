@@ -1,6 +1,11 @@
 const Target = require("../../models/storesInfo.model");
 var unirest = require("unirest");
 const jwt = require("jsonwebtoken")
+const {storeCredentialsHTML} = require("../../mailHTML/mail.HTML.js")
+const sgMail = require('@sendgrid/mail')
+sgMail.setApiKey(process.env.SGKEY)
+
+
 //Create 
 const create =async (req, res) => {
  const target = await Target.create(req.body)
@@ -88,10 +93,35 @@ deletee =  async (req, res) => {
   }
 }
 
+
+const SendMail =async (req,res)=> {
+    const msg = {
+      to: req.body.mail, 
+      from: `BEAT THE RECEIPT🧾 <beatthereceipt@gmail.com>`, 
+      subject: 'Beat the Receipt Subscription',
+      html:storeCredentialsHTML(req.body.storeInfo,req.body.key,req.body.token),
+    }
+    sgMail
+      .send(msg)
+      .then(() => {
+        res.json({
+          msg: "Email Sent"
+        });
+      })
+      .catch((error) => {
+        console.error(error)
+        res.json({
+          msg: "ERROR"
+        });
+      })
+    
+  };
+
 module.exports = {
     create,
     update,
     deletee,
-    Read
+    Read,
+    SendMail
   };
   
