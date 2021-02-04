@@ -9,7 +9,7 @@ var QRCode = require('qrcode')
 const {
   receiptCreateValidation,
 } = require('../../validations/receipt.validation')
-const { receiptHTML2 } = require('../../mailHTML/mail.HTML.js')
+const { receiptHTML } = require('../../mailHTML/mail.HTML.js')
 
 const Create = async (req, res) => {
   const { error } = receiptCreateValidation(req.body)
@@ -162,7 +162,7 @@ const SendMail = async (req, res) => {
     from: `${storeInfo.storeName} RECEIPT🧾 <beatthereceipt@gmail.com>`, // Change to your verified sender
     subject: 'Your Receipt🧾',
     //   text: 'a',
-    html: receiptHTML2(storeInfo, receipt, qrCodeLink),
+    html: receiptHTML(storeInfo, receipt, qrCodeLink),
   }
   sgMail
     .send(msg)
